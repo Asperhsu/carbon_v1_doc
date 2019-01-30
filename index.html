@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+   <title>Carbon - A simple PHP API extension for DateTime.</title>
+   <meta name="description" content="Carbon - A simple PHP API extension for DateTime.">
+   <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/tomorrow-night.min.css">
+   <link href="/carbon.css" rel="stylesheet">
+   <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-27020320-3', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+<body data-spy="scroll" data-target="#affix-nav">
+   <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+         <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="/logo.png" alt="Carbon" width="159" height="50"></a>
+         </div>
+         <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+               <li><a href="/#gettingstarted">Getting Started</a></li>
+               <li><a href="/docs/">Docs</a></li>
+               <li><a href="/history/">History</a></li>
+               <li><a href="/contribute/">Contribute</a></li>
+               <li><a href="//github.com/briannesbitt/carbon">Github</a></li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+
+   <div class="jumbotron">
+   <div class="container">
+      <h1>A simple PHP API extension for DateTime.</h1>
+      <pre><code class="php">printf("Right now is %s", Carbon::now()->toDateTimeString());
+printf("Right now in Vancouver is %s", Carbon::now('America/Vancouver'));  //implicit __toString()
+$tomorrow = Carbon::now()->addDay();
+$lastWeek = Carbon::now()->subWeek();
+$nextSummerOlympics = Carbon::createFromDate(2016)->addYears(4);
+
+$officialDate = Carbon::now()->toRfc2822String();
+
+$howOldAmI = Carbon::createFromDate(1975, 5, 21)->age;
+
+$noonTodayLondonTime = Carbon::createFromTime(12, 0, 0, 'Europe/London');
+
+$internetWillBlowUpOn = Carbon::create(2038, 01, 19, 3, 14, 7, 'GMT');
+
+// Don't really want this to happen so mock now
+Carbon::setTestNow(Carbon::createFromDate(2000, 1, 1));
+
+// comparisons are always done in UTC
+if (Carbon::now()->gte($internetWillBlowUpOn)) {
+    die();
+}
+
+// Phew! Return to normal behaviour
+Carbon::setTestNow();
+
+if (Carbon::now()->isWeekend()) {
+    echo 'Party!';
+}
+echo Carbon::now()->subMinutes(2)->diffForHumans(); // '2 minutes ago'
+
+// ... but also does 'from now', 'after' and 'before'
+// rolling up to seconds, minutes, hours, days, months, years
+
+CarbonInterval::setLocale('fr');
+echo CarbonInterval::years(2)->minutes(2); // '2 ans 2 minutes'
+
+$daysSinceEpoch = Carbon::createFromTimestamp(0)->diffInDays();
+</code></pre>
+   </div>
+</div>
+
+
+   <div class="container page">
+      <div class="row">
+         <div class="col-md-9">
+            <ul class="list-inline">
+    <li><a href="https://packagist.org/packages/nesbot/carbon"><img src="https://poser.pugx.org/nesbot/carbon/v/stable.png"></a></li>
+    <li><a href="https://packagist.org/packages/nesbot/carbon"><img src="https://poser.pugx.org/nesbot/carbon/downloads.png"></a></li>
+    <li><a href="https://travis-ci.org/briannesbitt/Carbon"><img src="https://secure.travis-ci.org/briannesbitt/Carbon.png"></a></li>
+    <li><a href="https://styleci.io/repos/5724990"><img src="https://styleci.io/repos/5724990/shield?style=flat"></a></li>
+    <li><a href="https://codecov.io/github/briannesbitt/Carbon?branch=master"><img src="https://codecov.io/github/briannesbitt/Carbon/coverage.svg?branch=master"></a></li>
+</ul>
+
+<h1 id="gettingstarted">Getting Started</h1>
+
+<p>1.x is compatible with PHP 5.3+.<br>A 2.x version is in the works and will require PHP 5.4+.</p>
+
+<h3>Installing</h3>
+<p>The easiest and recommended method to install Carbon is via <a href="http://getcomposer.org/">composer</a>.</p>
+
+<div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#withcomposer" role="tab" data-toggle="tab">With composer</a></li>
+        <li role="presentation"><a href="#nocomposer" role="tab" data-toggle="tab">Direct download</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="withcomposer">
+            <p></p>
+            <p>Use the following command to install with composer.</p>
+
+            <p><pre><code>$ composer require nesbot/carbon</code></pre></p>
+
+            <p>This will automatically get the latest version and configure a <code>composer.json</code> file.</p>
+
+            <p><pre><code class="php">&lt;?php
+require 'vendor/autoload.php';
+
+use Carbon\Carbon;
+
+printf("Now: %s", Carbon::now());</code></pre></p>
+
+            <p>If you wish you can create the following <code>composer.json</code> file and run <code>composer install</code> to install it.</p>
+
+            <p><pre><code class="php">{
+    "require": {
+        "nesbot/carbon": "~1.18"
+    }
+}</code></pre></p>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="nocomposer">
+            <p></p>
+            <p>Why are you not using <a href="http://getcomposer.org/">composer</a>?</p>
+            <p>Download the last release (or any other you want) here: <a href="https://github.com/briannesbitt/Carbon/releases">releases</a>.</p>
+            <p>Release package is the asset named <strong>Carbon-x.y.z.zip</strong> where <strong>x.y.z</strong> is the version number.</p>
+            <p>Extract the zip in a directory in your project, then require the <strong>autoload.php</strong> file to make any Carbon class available:</p>
+
+            <p><pre><code class="php">&lt;?php
+require 'path/to/Carbon/autoload.php';
+
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+
+printf("Now: %s", Carbon::now());
+
+printf("1 day: %s", CarbonInterval::day()->forHumans());</code></pre></p>
+
+            <p>Those packages contain <strong>symfony/translation</strong> to make <code>diffForHumans</code> method vailable in different languages.</p>
+            <p>Install with composer is still a better option since it allows you to get the <strong>symfony/translation</strong> (and possible future dependencies) version that suit the best your PHP version and keep the whole think up-to-date via <code>composer update</code> command.</p>
+        </div>
+    </div>
+</div>
+
+<h3>Learn More</h3>
+Looks good so far.  What do I do next? Read the <a href="/docs">API docs</a>.
+
+<h2>Author</h2>
+
+<address>
+  <strong>Brian Nesbitt</strong><br>
+  <a href="http://nesbot.com">http://nesbot.com</a><br>
+  <a href="http://twitter.com/NesbittBrian">http://twitter.com/NesbittBrian</a>
+</address>
+
+<h2>License</h2>
+<p>Carbon is licensed under the MIT License - see the <code>LICENSE</code> file for details.</p>
+
+<h2>Why the name Carbon?</h2>
+<p>Read about <a href="http://en.wikipedia.org/wiki/Radiocarbon_dating">Carbon Dating</a>.</p>
+         </div>
+         
+      </div>
+   </div>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+   <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
